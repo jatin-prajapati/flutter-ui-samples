@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:ui_samples/pages/fab_to_bottom_bar.dart';
+import 'package:ui_samples/src/pages/login/index.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  ErrorWidget.builder = (FlutterErrorDetails details) => Container(
+        child: Center(
+          child: Text('Error occured. Please try again later.'),
+        ),
+      );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: {
+          '/': (context) => MyHomePage(
+                title: 'Flutter UI Samples',
+              ),
+          LoginPage.routeName: (context) => LoginPage(),
+        });
   }
 }
 
@@ -26,18 +37,13 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -46,24 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
+              child: Text('Login page1'),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        FABToBottomNavigationBar(),
-                  ),
-                );
+                Navigator.of(context).pushNamed(LoginPage.routeName);
               },
-              child: Text('FAB to Bottombar'),
             )
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
